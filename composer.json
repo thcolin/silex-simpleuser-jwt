@@ -1,0 +1,27 @@
+{
+    "name": "thcolin/silex-simpleuser-jwt",
+    "authors": [
+        {
+            "name": "thcolin",
+            "email": "th.colin3@gmail.com"
+        }
+    ],
+    "require": {
+        "jasongrimes/silex-simpleuser": "2.*",
+        "cnam/security-jwt-service-provider": "1.*",
+        "kumatch/silex-json-body-provider": "0.1.*"
+    },
+    "autoload": {
+      "psr-4": {
+        "SimpleUser\\JWT\\": "src/"
+      }
+    },
+    "require-dev": {
+        "symfony/browser-kit": "~3.0"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "SimpleUser\\JWT\\Tests\\": "tests/"
+      }
+    }
+}

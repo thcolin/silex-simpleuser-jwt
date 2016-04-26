@@ -1,0 +1,18 @@
+{#
+Template for an email message sent to confirm an email address.
+Variables passed to this template:
+    user: SimpleUser\User
+    token: Confirm token
+    url: Confirm url
+#}
+
+{# The subject line #}
+{%- block subject -%}{%- autoescape false -%}
+    Confirm
+{%- endautoescape -%}{%- endblock -%}
+
+{# The HTML message #}
+{%- block body_html -%}
+    <p>confirm token: {{token}}</p>
+    <a href="{{url}}">{{url}}</a>
+{%- endblock -%}
