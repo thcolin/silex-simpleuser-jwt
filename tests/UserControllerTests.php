@@ -235,7 +235,7 @@
       $data = $this -> invite(['email' => 'register@register.com', 'password' => 'register'], 'invite@invite.com');
 
       $this -> assertArrayHasKey('message', $data);
-      $this -> assertEquals($data['message'], 'invite@invite.com should receive an email soon with a confirmation of the invitation');
+      $this -> assertEquals($data['message'], 'The user should receive an email soon with a confirmation of the invitation');
     }
 
     /**

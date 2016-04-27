@@ -35,6 +35,7 @@
       $app['user.jwt.options'] = (isset($app['user.jwt.options']) ? $app['user.jwt.options']:[]);
       $app['user.jwt.options'] = array_replace_recursive([
         'class' => 'SimpleUser\JWT\User',
+        'language' => 'SimpleUser\JWT\Languages\English',
         'registrations' => [
           'enabled' => true,
           'confirm' => false

@@ -29,6 +29,7 @@ $app -> error(function(Exception $e, $code) use($app){
 
 // Default options
 $app['user.jwt.options'] = [
+  'language' => 'SimpleUser\JWT\Languages\English', // This class contains messages constants, you can create your own with the same structure
   'class' => 'SimpleUser\JWT\User', // If you want your own class, extends 'SimpleUser\JWT\User'
   'registrations' => [
     'enabled' => true,
@@ -191,3 +192,7 @@ $app['security.firewalls'] = [
   ]
 ];
 ```
+
+Tests
+-----
+There are unit tests in ```tests/```, you can launch them with ```phpunit```. You need to launch [MailCatcher](https://mailcatcher.me/) before making tests.

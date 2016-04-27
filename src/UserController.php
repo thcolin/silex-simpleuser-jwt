@@ -29,25 +29,25 @@
       $password = $request -> request -> get('password');
 
       if(!$app['user.jwt.options']['registrations']['enabled']){
-        throw new Exception('Registrations are disabled');
+        throw new Exception($app['user.jwt.options']['language']::REGISTRATIONS_DISABLED);
       }
 
       if(!$email OR !$password){
-        throw new InvalidArgumentException('Email, password missing');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_OR_PASSWORD_MISSING);
       }
 
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        throw new InvalidArgumentException('Email not valid');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_INVALID);
       }
 
       if($app['user.manager'] -> findOneBy(['email' => $email])){
-        throw new UsedException('Email already registered');
+        throw new UsedException($app['user.jwt.options']['language']::EMAIL_ALREADY_REGISTERED);
       }
 
       $user = $app['user.manager'] -> createUser($email, $password);
       $user -> addRole('ROLE_REGISTERED');
 
-      $answer = ['message' => 'Account created'];
+      $answer = ['message' => $app['user.jwt.options']['language']::REGISTER_SUCCESS];
 
       if($app['user.jwt.options']['registrations']['confirm']){
         $user -> setEnabled(false);
@@ -87,25 +87,25 @@
       $password = $request -> request -> get('password');
 
       if(!$email OR !$password){
-        throw new InvalidArgumentException('Email or password missing');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_OR_PASSWORD_MISSING);
       }
 
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        throw new InvalidArgumentException('Email not valid');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_INVALID);
       }
 
       $user = $app['user.manager'] -> findOneBy(['email' => $email]);
 
       if(!$user){
-        throw new UnknownException('Email not registered');
+        throw new UnknownException($app['user.jwt.options']['language']::EMAIL_UNKNOWN);
       }
 
       if(!$app['security.encoder.digest'] -> isPasswordValid($user -> getPassword(), $password, $user -> getSalt())){
-        throw new MismatchException('Invalid password');
+        throw new MismatchException($app['user.jwt.options']['language']::PASSWORD_INVALID);
       }
 
       if(!$user -> isEnabled()){
-        throw new DisabledException('Account disabled');
+        throw new DisabledException($app['user.jwt.options']['language']::ACCOUNT_DISABLED);
       }
 
       return $app -> json(['token' => $app['security.jwt.encoder'] -> encode($user -> serialize())]);
@@ -121,23 +121,23 @@
       $email = $request -> request -> get('email');
 
       if(!$app['user.jwt.options']['invite']['enabled']){
-        throw new Exception('Invitations are disabled');
+        throw new Exception($app['user.jwt.options']['language']::INVITATIONS_DISABLED);
       }
 
       if(!$app['security.authorization_checker'] -> isGranted('ROLE_ALLOW_INVITE')){
-        throw new AuthorizationException("You're not allowed to send invitations");
+        throw new AuthorizationException($app['user.jwt.options']['language']::INVITATIONS_FORBIDDEN);
       }
 
       if(!$email){
-        throw new InvalidArgumentException('Email missing');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_MISSING);
       }
 
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        throw new InvalidArgumentException('Email not valid');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_INVALID);
       }
 
       if($app['user.manager'] -> findOneBy(['email' => $email])){
-        throw new UsedException('Email already registered');
+        throw new UsedException($app['user.jwt.options']['language']::EMAIL_ALREADY_REGISTERED);
       }
 
       $user = $app['user.manager'] -> createUser($email, $app['user.tokenGenerator'] -> generateToken());
@@ -157,7 +157,7 @@
         ['token' => $user -> getConfirmationToken()]
       );
 
-      $answer = ['message' => $email.' should receive an email soon with a confirmation of the invitation'];
+      $answer = ['message' => $app['user.jwt.options']['language']::INVITATIONS_SUCCESS];
 
       if(isset($app['dev']) && $app['dev']){
         $answer['token'] = $user -> getConfirmationToken();
@@ -189,21 +189,21 @@
       $email = $request -> request -> get('email');
 
       if(!$app['user.jwt.options']['forget']['enabled']){
-        throw new Exception('Forget function are disabled');
+        throw new Exception($app['user.jwt.options']['language']::FORGET_DISABLED);
       }
 
       if(!$email){
-        throw new InvalidArgumentException('Email missing');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_MISSING);
       }
 
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        throw new InvalidArgumentException('Email not valid');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::EMAIL_INVALID);
       }
 
       $user = $app['user.manager'] -> findOneBy(['email' => $email]);
 
       if(!$user){
-        throw new UnknownException('Email not registered');
+        throw new UnknownException($app['user.jwt.options']['language']::EMAIL_UNKNOWN);
       }
 
       $user -> setTimePasswordResetRequested(time());
@@ -217,7 +217,7 @@
         ['token' => $user -> getConfirmationToken()]
       );
 
-      $answer = ['message' => 'Email to reset the password sent'];
+      $answer = ['message' => $app['user.jwt.options']['language']::FORGET_SUCCESS];
 
       if(isset($app['dev']) && $app['dev']){
         $answer['token'] = $user -> getConfirmationToken();
@@ -237,17 +237,17 @@
       $password = $request -> request -> get('password');
 
       if(!$app['user.jwt.options']['forget']['enabled']){
-        throw new Exception('Reset function are disabled');
+        throw new Exception($app['user.jwt.options']['language']::RESET_DISABLED);
       }
 
       $user = $app['user.manager'] -> findOneBy(['confirmationToken' => $token]);
 
       if(!$user){
-        throw new InvalidArgumentException('Token invalid');
+        throw new InvalidArgumentException($app['user.jwt.options']['language']::TOKEN_INVALID);
       }
 
       if($user -> isPasswordResetRequestExpired($app['user.options']['passwordReset']['tokenTTL'])){
-        throw new ExpiredException('Token expired');
+        throw new ExpiredException($app['user.jwt.options']['language']::TOKEN_EXPIRED);
       }
 
       $user -> setEnabled(true);
@@ -256,7 +256,7 @@
       $app['user.manager'] -> setUserPassword($user, $password);
       $app['user.manager'] -> update($user);
 
-      return $app -> json(['message' => 'Password reseted', 'token' => $app['security.jwt.encoder'] -> encode($user -> serialize())]);
+      return $app -> json(['message' => $app['user.jwt.options']['language']::RESET_SUCCESS, 'token' => $app['security.jwt.encoder'] -> encode($user -> serialize())]);
     }
 
     /**
