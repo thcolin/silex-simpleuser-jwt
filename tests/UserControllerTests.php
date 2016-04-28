@@ -33,7 +33,6 @@
       });
 
       // database
-      $app -> register(new SecurityServiceProvider());
       $app -> register(new DoctrineServiceProvider(), [
         'db.options' => [
           'driver' => 'pdo_sqlite',
@@ -53,6 +52,7 @@
         ]
       ];
 
+      $app -> register(new SecurityServiceProvider());
       $app -> register(new SecurityJWTServiceProvider());
 
       // mailer
@@ -96,7 +96,7 @@
         'ROLE_ADMIN' => ['ROLE_REGISTERED']
       ];
 
-      // not necessary but useful
+      // needed to parse user at each request
       $app['security.firewalls'] = [
         'login' => [
           'pattern' => 'register|login|forget|reset',
@@ -104,7 +104,9 @@
         ],
         'secured' => [
           'pattern' => '.*$',
-          'users' => $app['user.manager'],
+          'users' => $app -> share(function() use($app){
+            return $app['user.manager'];
+          }),
           'jwt' => [
     				'use_forward' => true,
     				'require_previous_session' => false,

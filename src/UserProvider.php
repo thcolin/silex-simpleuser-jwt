@@ -113,11 +113,7 @@
       ];
 
       // register simple-user
-      $app -> register(new UserServiceProvider(), [
-        'user.options' => [
-          'userClass' => 'SimpleUser\JWT\User'
-        ]
-      ]);
+      $app -> register(new UserServiceProvider());
 
       // cnam/security-jwt-service-provider need the users list in $app['users']
       $app['users'] = $app -> share(function() use($app){

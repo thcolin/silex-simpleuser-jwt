@@ -98,10 +98,8 @@ Dependencies
 ### Database
 Exemple with a SQLite database
 ```php
-use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 
-$app -> register(new SecurityServiceProvider());
 $app -> register(new DoctrineServiceProvider(), [
   'db.options' => [
     'driver' => 'pdo_sqlite',
@@ -113,6 +111,7 @@ $app -> register(new DoctrineServiceProvider(), [
 
 ### JWT
 ```php
+use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SecurityJWTServiceProvider;
 
 $app['security.jwt'] = [
@@ -125,6 +124,7 @@ $app['security.jwt'] = [
   ]
 ];
 
+$app -> register(new SecurityServiceProvider());
 $app -> register(new SecurityJWTServiceProvider());
 ```
 
