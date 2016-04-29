@@ -30,6 +30,7 @@ $app -> error(function(Exception $e, $code) use($app){
 // Default options
 $app['user.jwt.options'] = [
   'language' => 'SimpleUser\JWT\Languages\English', // This class contains messages constants, you can create your own with the same structure
+  'controller' => 'SimpleUser\JWT\UserController', // User controller, you can rewrite it
   'class' => 'SimpleUser\JWT\User', // If you want your own class, extends 'SimpleUser\JWT\User'
   'registrations' => [
     'enabled' => true,

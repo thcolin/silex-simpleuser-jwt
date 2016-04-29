@@ -35,6 +35,7 @@
       $app['user.jwt.options'] = (isset($app['user.jwt.options']) ? $app['user.jwt.options']:[]);
       $app['user.jwt.options'] = array_replace_recursive([
         'class' => 'SimpleUser\JWT\User',
+        'controller' => 'SimpleUser\JWT\UserController',
         'language' => 'SimpleUser\JWT\Languages\English',
         'registrations' => [
           'enabled' => true,
@@ -138,14 +139,13 @@
     public function connect(Application $app){
       $controllers = $app['controllers_factory'];
 
-      $accountController = 'SimpleUser\JWT\UserController';
-      $controllers -> post('/register', $accountController.'::register') -> bind('user.jwt.register');
-      $controllers -> post('/login', $accountController.'::login') -> bind('user.jwt.login');
-      $controllers -> post('/invite', $accountController.'::invite') -> bind('user.jwt.invite');
-      $controllers -> get('/friends', $accountController.'::friends') -> bind('user.jwt.friends');
-      $controllers -> post('/forget', $accountController.'::forget') -> bind('user.jwt.forget');
-      $controllers -> post('/reset/{token}', $accountController.'::reset') -> bind('user.jwt.reset');
-      $controllers -> post('/profil/{id}', $accountController.'::update') -> bind('user.jwt.update') -> value('id', null);
+      $controllers -> post('/register', $app['user.jwt.options']['controller'].'::register') -> bind('user.jwt.register');
+      $controllers -> post('/login', $app['user.jwt.options']['controller'].'::login') -> bind('user.jwt.login');
+      $controllers -> post('/invite', $app['user.jwt.options']['controller'].'::invite') -> bind('user.jwt.invite');
+      $controllers -> get('/friends', $app['user.jwt.options']['controller'].'::friends') -> bind('user.jwt.friends');
+      $controllers -> post('/forget', $app['user.jwt.options']['controller'].'::forget') -> bind('user.jwt.forget');
+      $controllers -> post('/reset/{token}', $app['user.jwt.options']['controller'].'::reset') -> bind('user.jwt.reset');
+      $controllers -> post('/profil/{id}', $app['user.jwt.options']['controller'].'::update') -> bind('user.jwt.update') -> value('id', null);
 
       return $controllers;
     }
