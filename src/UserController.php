@@ -41,7 +41,7 @@
       }
 
       if($app['user.manager'] -> findOneBy(['email' => $email])){
-        throw new UsedException($app['user.jwt.options']['language']::EMAIL_ALREADY_REGISTERED);
+        throw new UsedException($app['user.jwt.options']['language']::EMAIL_USED);
       }
 
       $user = $app['user.manager'] -> createUser($email, $password);
@@ -137,7 +137,7 @@
       }
 
       if($app['user.manager'] -> findOneBy(['email' => $email])){
-        throw new UsedException($app['user.jwt.options']['language']::EMAIL_ALREADY_REGISTERED);
+        throw new UsedException($app['user.jwt.options']['language']::EMAIL_USED);
       }
 
       $user = $app['user.manager'] -> createUser($email, $app['user.tokenGenerator'] -> generateToken());
@@ -282,12 +282,12 @@
       } else if($app['security.authorization_checker'] -> isGranted('ROLE_ADMIN')){
         $user = $app['user.manager'] -> findOneBy(['id' => $id]);
       } else{
-        throw new AuthorizationException("You're not allowed to update other users account");
+        throw new AuthorizationException($app['user.jwt.options']['language']::UNAUTHORIZED);
       }
 
       if($email && filter_var($email, FILTER_VALIDATE_EMAIL)){
         if($app['user.manager'] -> findOneBy(['email' => $email])){
-          throw new UsedException('Email already registered');
+          throw new UsedException($app['user.jwt.options']['language']::EMAIL_USED);
         }
         $user -> setEmail($email);
       }

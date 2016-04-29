@@ -21,12 +21,13 @@
     const EMAIL_MISSING = 'Email manquant';
     const EMAIL_OR_PASSWORD_MISSING = 'Email ou mot de passe manquant';
     const EMAIL_INVALID = 'Email non valide';
-    const EMAIL_ALREADY_REGISTERED = 'Cet email est déjà enregistré';
+    const EMAIL_USED = 'Cet email est déjà enregistré';
     const EMAIL_UNKNOWN = 'Email inconnu';
     const PASSWORD_INVALID = 'Mot de passe incorrect';
     const ACCOUNT_DISABLED = 'Votre compte est désactivé';
     const TOKEN_INVALID = 'La clé de réinitialisation est invalide';
     const TOKEN_EXPIRED = 'La clé de réinitialisation à expirée';
+    const UNAUTHORIZED = "Vous n'êtes pas autorisé à effectuer cette action";
   }
 
 ?>

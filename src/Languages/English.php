@@ -21,12 +21,13 @@
     const EMAIL_MISSING = 'Email missing';
     const EMAIL_OR_PASSWORD_MISSING = 'Email or password missing';
     const EMAIL_INVALID = 'Email not valid';
-    const EMAIL_ALREADY_REGISTERED = 'Email already registered';
+    const EMAIL_USED = 'Email already in use';
     const EMAIL_UNKNOWN = 'Email not registered';
     const PASSWORD_INVALID = 'Invalid password';
     const ACCOUNT_DISABLED = 'Account disabled';
     const TOKEN_INVALID = 'Token invalid';
     const TOKEN_EXPIRED = 'Token expired';
+    const UNAUTHORIZED = "You're not allowed to do this action";
   }
 
 ?>
